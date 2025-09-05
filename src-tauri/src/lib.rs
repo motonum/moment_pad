@@ -1,6 +1,5 @@
 use tauri::{
-    menu::{Menu, MenuItem, PredefinedMenuItem},
-    tray::TrayIconBuilder,
+    menu::{Menu, MenuItem, PredefinedMenuItem}, tray::TrayIconBuilder, Manager, WebviewWindowBuilder, WindowEvent
 };
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -12,7 +11,24 @@ fn greet(name: &str) -> String {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
+        .plugin(
+            tauri_plugin_global_shortcut::Builder::new()
+                .with_shortcuts(["ctrl+shift+m"])
+                .expect("failed to add shortcuts")
+                .with_handler(move |app, _shortcut, _event| {
+                    if let Some(webview_window) = app.get_webview_window("main") {
+                        let _ = webview_window.show();
+                        let _ = webview_window.set_focus();
+                    } else {
+                        let _ = WebviewWindowBuilder::new(app, "main", Default::default())
+                            .title("Moment Pad")
+                            .inner_size(500.0, 250.0)
+                            .always_on_top(true)
+                            .build();
+                    }
+                })
+                .build(),
+        )
         .setup(|app| {
             // メニューの追加
             let separator = PredefinedMenuItem::separator(app)?;
@@ -43,12 +59,22 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![greet])
         .build(tauri::generate_context!())
         .expect("error while running tauri application")
-        .run(|_app_handle, event| match event {
+        .run(|app, event| match event {
             tauri::RunEvent::ExitRequested { api, code, .. } => {
                 if code.is_none() {
                     api.prevent_exit();
+                    if let Some(webview_window) = app.get_webview_window("main") {
+                        let _ = webview_window.hide();
+                    }
                 }
             }
+            tauri::RunEvent::WindowEvent {  event, .. } => {
+                // if matches!(event, WindowEvent::Focused(false)) {
+                //     if let Some(webview_window) = app.get_webview_window("main") {
+                //         let _ = webview_window.hide();
+                //     }
+                // }
+            }
             _ => {}
-        });
+        })
 }

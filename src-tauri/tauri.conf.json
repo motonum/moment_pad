@@ -15,12 +15,16 @@
         "title": "Moment Pad",
         "width": 500,
         "height": 250,
-        "alwaysOnTop": true
+        "alwaysOnTop": true,
+        "decorations": false,
+        "transparent": true,
+        "shadow": true
       }
     ],
     "security": {
       "csp": null
-    }
+    },
+    "macOSPrivateApi": true
   },
   "bundle": {
     "active": true,
