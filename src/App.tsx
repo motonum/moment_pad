@@ -52,7 +52,14 @@ function App() {
 
   return (
     <div className="container">
-      <button className="copy-button" onClick={handleCopy} disabled={isCopied || !text}>
+      <header data-tauri-drag-region className="header">
+        Moment Pad
+      </header>
+      <button
+        className="copy-button"
+        onClick={handleCopy}
+        disabled={isCopied || !text}
+      >
         {isCopied ? "Copied!" : "Copy"}
       </button>
       <textarea
