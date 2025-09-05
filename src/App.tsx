@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import "./App.css";
+import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 
 function App() {
   const [text, setText] = useState("");

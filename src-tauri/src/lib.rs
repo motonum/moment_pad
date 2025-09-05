@@ -1,12 +1,10 @@
 use tauri::{
-    menu::{Menu, MenuItem, PredefinedMenuItem}, tray::TrayIconBuilder, Manager, WebviewWindowBuilder, WindowEvent
+    menu::{Menu, MenuItem, PredefinedMenuItem},
+    tray::TrayIconBuilder,
+    Manager,
+    WindowEvent,
+    WebviewWindowBuilder
 };
-
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -74,11 +72,11 @@ pub fn run() {
                 }
             }
             tauri::RunEvent::WindowEvent {  event, .. } => {
-                // if matches!(event, WindowEvent::Focused(false)) {
-                //     if let Some(webview_window) = app.get_webview_window("main") {
-                //         let _ = webview_window.hide();
-                //     }
-                // }
+                if matches!(event, WindowEvent::Focused(false)) {
+                    if let Some(webview_window) = app.get_webview_window("main") {
+                        let _ = webview_window.hide();
+                    }
+                }
             }
             _ => {}
         })
