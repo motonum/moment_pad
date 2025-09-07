@@ -1,9 +1,49 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import "./App.css";
 import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
+import { Store } from "@tauri-apps/plugin-store";
+
+const useTextWithStore = (initialText: string = "") => {
+  const [text, setText] = useState<string>(initialText);
+  const [store, setStore] = useState<Store | null>(null);
+
+  useEffect(() => {
+    const init = async () => {
+      const loaded = await Store.load("store.json");
+      setStore(loaded);
+    };
+    init();
+  }, []);
+
+  useEffect(() => {
+    if (!store) return;
+    const load = async () => {
+      const savedText = await store.get<{ value: string }>("text");
+      if (savedText) {
+        setText(savedText.value);
+      }
+    };
+    load();
+  }, [store]);
+
+  const setTextWithStore = useCallback(
+    (text: string) => {
+      setText(text);
+      if (!store) return;
+      const save = async () => {
+        await store.set("text", { value: text });
+        await store.save();
+      };
+      save();
+    },
+    [store]
+  );
+
+  return [text, setTextWithStore] as const;
+};
 
 function App() {
-  const [text, setText] = useState("");
+  const [text, setTextWithStore] = useTextWithStore();
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -65,7 +105,7 @@ function App() {
       <textarea
         className="memo-pad"
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => setTextWithStore(e.target.value)}
         onKeyDown={handleShortcutKey}
         placeholder="Write something..."
         autoFocus={true}
