@@ -1,26 +1,11 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import "./App.css";
-import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import useTextWithStore from "./hooks/useTextWithStore";
+import useCopy from "./hooks/useCopy";
 
 function App() {
   const [text, setTextWithStore] = useTextWithStore();
-  const [isCopied, setIsCopied] = useState(false);
-
-  const handleCopy = useCallback(() => {
-    if (text && !isCopied) {
-      navigator.clipboard.writeText(text).then(() => {
-        setIsCopied(true);
-        setTimeout(async () => {
-          setIsCopied(false);
-          const window = await WebviewWindow.getByLabel("main");
-          if (window) {
-            await window.hide();
-          }
-        }, 500);
-      });
-    }
-  }, [text, isCopied, setIsCopied]);
+  const { isCopied, handleCopy } = useCopy({ windowLabel: "main" });
 
   const handleShortcutKey = useCallback(
     (e: React.KeyboardEvent) => {
@@ -45,10 +30,10 @@ function App() {
       };
 
       if ((["key", ...modKeys] as const).every((k) => e[k] === keyBinding[k])) {
-        handleCopy();
+        handleCopy(text);
       }
     },
-    [handleCopy]
+    [handleCopy, text]
   );
 
   return (
@@ -58,7 +43,7 @@ function App() {
       </header>
       <button
         className="copy-button"
-        onClick={handleCopy}
+        onClick={() => handleCopy(text)}
         disabled={isCopied || !text}
       >
         {isCopied ? "Copied!" : "Copy"}
