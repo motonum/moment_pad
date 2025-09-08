@@ -1,7 +1,5 @@
 import "./App.css";
-import useTextWithStore from "./hooks/useTextWithStore";
-import useCopy from "./hooks/useCopy";
-import useShortcutKey from "./hooks/useShortcutKey";
+import { useTextWithStore, useCopy, useShortcutKey } from "./hooks";
 
 function App() {
   const [text, setTextWithStore] = useTextWithStore();
