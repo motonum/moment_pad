@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="container">
       <header data-tauri-drag-region className="header">
-        Moment Pad
+        MomentPad
       </header>
       <button
         className="copy-button"

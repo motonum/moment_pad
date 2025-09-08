@@ -19,7 +19,7 @@ pub fn run() {
                         let _ = webview_window.set_focus();
                     } else {
                         let _ = WebviewWindowBuilder::new(app, "main", Default::default())
-                            .title("Moment Pad")
+                            .title("MomentPad")
                             .inner_size(500.0, 250.0)
                             .always_on_top(true)
                             .build();
