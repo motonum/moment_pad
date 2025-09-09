@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import "./App.css";
 import { useTextWithStore, useCopy, useShortcutKey } from "./hooks";
 
@@ -5,7 +6,17 @@ function App() {
   const [text, setTextWithStore] = useTextWithStore();
   const { isCopied, handleCopy } = useCopy({ windowLabel: "main" });
 
-  useShortcutKey({ key: "c", cmdKey: true }, handleCopy, text);
+  const handleShortcutKey = useCallback(
+    (text: string) => {
+      const selection = getSelection();
+      if (!selection || selection.toString() === "") {
+        handleCopy(text);
+      }
+    },
+    [handleCopy]
+  );
+
+  useShortcutKey({ key: "c", cmdKey: true }, handleShortcutKey, text);
 
   return (
     <div className="container">

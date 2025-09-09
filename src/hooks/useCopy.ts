@@ -1,6 +1,12 @@
 import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { useState, useCallback } from "react";
 
+const hideWindow = (windowLabel: string) => {
+  WebviewWindow.getByLabel(windowLabel).then((val) => {
+    val && val.hide();
+  });
+};
+
 type UseCopyProps = { windowLabel: string; duration?: number };
 
 const useCopy = ({ windowLabel, duration = 500 }: UseCopyProps) => {
@@ -12,12 +18,11 @@ const useCopy = ({ windowLabel, duration = 500 }: UseCopyProps) => {
           setIsCopied(true);
           setTimeout(async () => {
             setIsCopied(false);
-            const window = await WebviewWindow.getByLabel(windowLabel);
-            if (window) {
-              await window.hide();
-            }
+            hideWindow(windowLabel);
           }, duration);
         });
+      } else {
+        hideWindow(windowLabel);
       }
     },
     [isCopied, setIsCopied]
