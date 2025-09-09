@@ -25,6 +25,7 @@ function App() {
         onChange={(e) => setTextWithStore(e.target.value)}
         placeholder="Write something..."
         autoFocus={true}
+        autoCorrect="off"
       />
     </div>
   );
