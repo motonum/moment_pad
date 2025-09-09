@@ -18,7 +18,8 @@
         "alwaysOnTop": true,
         "decorations": false,
         "transparent": true,
-        "shadow": true
+        "shadow": true,
+        "acceptFirstMouse": true
       }
     ],
     "security": {

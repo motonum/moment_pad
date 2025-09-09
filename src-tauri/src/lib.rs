@@ -2,7 +2,6 @@ use tauri::{
     menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::TrayIconBuilder,
     Manager,
-    WindowEvent,
     WebviewWindowBuilder
 };
 
@@ -67,13 +66,6 @@ pub fn run() {
             tauri::RunEvent::ExitRequested { api, code, .. } => {
                 if code.is_none() {
                     api.prevent_exit();
-                    if let Some(webview_window) = app.get_webview_window("main") {
-                        let _ = webview_window.hide();
-                    }
-                }
-            }
-            tauri::RunEvent::WindowEvent {  event, .. } => {
-                if matches!(event, WindowEvent::Focused(false)) {
                     if let Some(webview_window) = app.get_webview_window("main") {
                         let _ = webview_window.hide();
                     }
