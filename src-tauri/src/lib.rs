@@ -1,13 +1,13 @@
 use tauri::{
     menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::TrayIconBuilder,
-    Manager,
-    WebviewWindowBuilder
+    Manager, WebviewWindowBuilder,
 };
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_autostart::Builder::new().build())
         .plugin(
             tauri_plugin_global_shortcut::Builder::new()
                 .with_shortcuts(["ctrl+shift+m"])
@@ -21,6 +21,10 @@ pub fn run() {
                             .title("MomentPad")
                             .inner_size(500.0, 250.0)
                             .always_on_top(true)
+                            .accept_first_mouse(true)
+                            .decorations(false)
+                            .transparent(true)
+                            .shadow(true)
                             .build();
                     }
                 })
@@ -51,11 +55,23 @@ pub fn run() {
                 .icon(app.default_window_icon().unwrap().clone())
                 .build(app)?;
             
+            // OS起動時に起動
+            #[cfg(desktop)]
+            {
+                use tauri_plugin_autostart::ManagerExt;
+
+                // Get the autostart manager
+                let autostart_manager = app.autolaunch();
+                // Enable autostart
+                let _ = autostart_manager.enable();
+            }
+
             #[cfg(target_os = "macos")]
             {
                 app.set_activation_policy(tauri::ActivationPolicy::Accessory);
             }
-            
+
+
             Ok(())
         })
         .plugin(tauri_plugin_store::Builder::default().build())
