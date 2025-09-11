@@ -8,10 +8,10 @@
 }
 
 #root {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   position: relative;
   border-radius: 10px;
-  border: solid #222 0.5px;
+  border: solid #aaa 0.5px;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
@@ -76,11 +76,11 @@
 
 @media (prefers-color-scheme: dark) {
   * {
-    color: #e0e0e0;
+    color: #e5e5e5;
   }
 
   #root {
-    background-color: rgba(30, 30, 30, 0.8);
+    background-color: rgba(30, 30, 30, 0.95);
     border-color: #000;
   }
 
