@@ -1,7 +1,10 @@
 use tauri::{
     menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::TrayIconBuilder,
-    Manager, WebviewWindowBuilder,
+    Manager,
+    WebviewWindowBuilder,
+    image::Image,
+    path::BaseDirectory
 };
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -37,7 +40,10 @@ pub fn run() {
             let settings_i = MenuItem::with_id(app, "settings", "Settings", true, None::<&str>)?;
             let hide_i = MenuItem::with_id(app, "hide", "Hide", true, None::<&str>)?;
             let menu = Menu::with_items(app, &[&settings_i, &separator, &hide_i, &quit_i])?;
+            let path = app.path().resolve("resources/systray-icon.png", BaseDirectory::Resource)?;
+            let image = Image::from_path(&path).unwrap();
             let _tray = TrayIconBuilder::new()
+                .icon(image)
                 .menu(&menu)
                 .on_menu_event(|app, event| match event.id.as_ref() {
                     "quit" => {
@@ -52,7 +58,6 @@ pub fn run() {
                         println!("menu item {:?} not handled", event.id);
                     }
                 })
-                .icon(app.default_window_icon().unwrap().clone())
                 .build(app)?;
             
             // OS起動時に起動
