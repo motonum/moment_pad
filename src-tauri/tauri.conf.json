@@ -38,8 +38,6 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "resources": {
-      "resources/systray-icon.png": "resources/systray-icon.png"
-    }
+    "resources": ["systray-icon.png"]
   }
 }

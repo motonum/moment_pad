@@ -40,7 +40,7 @@ pub fn run() {
             let settings_i = MenuItem::with_id(app, "settings", "Settings", true, None::<&str>)?;
             let hide_i = MenuItem::with_id(app, "hide", "Hide", true, None::<&str>)?;
             let menu = Menu::with_items(app, &[&settings_i, &separator, &hide_i, &quit_i])?;
-            let path = app.path().resolve("resources/systray-icon.png", BaseDirectory::Resource)?;
+            let path = app.path().resolve("systray-icon.png", BaseDirectory::Resource)?;
             let image = Image::from_path(&path).unwrap();
             let _tray = TrayIconBuilder::new()
                 .icon(image)
