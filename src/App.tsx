@@ -10,7 +10,11 @@ function App() {
   const handleShortcutKey = useCallback(
     (text: string) => {
       const selection = getSelection();
-      if (!selection || selection.toString() === "") {
+      if (
+        !selection ||
+        selection.toString() === "" ||
+        selection.toString() === text
+      ) {
         handleCopy(text);
       }
     },
