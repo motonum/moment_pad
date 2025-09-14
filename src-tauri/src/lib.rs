@@ -47,15 +47,12 @@ pub fn run() {
                 .menu(&menu)
                 .on_menu_event(|app, event| match event.id.as_ref() {
                     "quit" => {
-                        println!("quit menu item was clicked");
                         app.exit(0);
                     }
                     "hide" => {
-                        println!("hide menu item was clicked");
                         app.hide().unwrap();
                     }
                     _ => {
-                        println!("menu item {:?} not handled", event.id);
                     }
                 })
                 .build(app)?;
