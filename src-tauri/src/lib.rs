@@ -50,7 +50,9 @@ pub fn run() {
                         app.exit(0);
                     }
                     "hide" => {
-                        app.hide().unwrap();
+                        if let Some(webview_window) = app.get_webview_window("main") {
+                            webview_window.hide().unwrap();
+                        }
                     }
                     _ => {
                     }
