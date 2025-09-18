@@ -26,6 +26,8 @@ vi.mock("@tauri-apps/plugin-store", () => {
       fakeStore[key] = value;
     }),
     save: vi.fn().mockResolvedValue(undefined),
+
+    // For testing
     clear: vi.fn().mockImplementation(async () => {
       Object.keys(fakeStore).forEach((key) => {
         delete fakeStore[key];
