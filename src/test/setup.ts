@@ -16,3 +16,26 @@ vi.mock("@tauri-apps/api/webviewWindow", () => ({
     }),
   },
 }));
+
+vi.mock("@tauri-apps/plugin-store", () => {
+  const fakeStore: Record<string, any> = {};
+
+  const mockStoreInstance = {
+    get: vi.fn().mockImplementation(async (key) => fakeStore[key] ?? null),
+    set: vi.fn().mockImplementation(async (key, value) => {
+      fakeStore[key] = value;
+    }),
+    save: vi.fn().mockResolvedValue(undefined),
+    clear: vi.fn().mockImplementation(async () => {
+      Object.keys(fakeStore).forEach((key) => {
+        delete fakeStore[key];
+      });
+    }),
+  };
+
+  return {
+    Store: {
+      load: vi.fn().mockResolvedValue(mockStoreInstance),
+    },
+  };
+});
