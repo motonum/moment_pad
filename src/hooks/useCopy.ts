@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 
 const hideWindow = (windowLabel: string) => {
   WebviewWindow.getByLabel(windowLabel).then((val) => {
-    val && val.hide();
+    val?.hide();
   });
 };
 
@@ -25,7 +25,7 @@ const useCopy = ({ windowLabel, duration = 500 }: UseCopyProps) => {
         hideWindow(windowLabel);
       }
     },
-    [isCopied, setIsCopied],
+    [isCopied, setIsCopied]
   );
 
   return { isCopied, handleCopy };
