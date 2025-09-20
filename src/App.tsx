@@ -57,6 +57,7 @@ function App() {
         MomentPad
       </header>
       <button
+        type="button"
         className="copy-button"
         onClick={() => handleCopy(text)}
         disabled={isCopied || !text}
