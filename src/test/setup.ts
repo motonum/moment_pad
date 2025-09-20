@@ -18,7 +18,7 @@ vi.mock("@tauri-apps/api/webviewWindow", () => ({
 }));
 
 vi.mock("@tauri-apps/plugin-store", () => {
-  const fakeStore: Record<string, any> = {};
+  const fakeStore: Record<string, string> = {};
 
   const mockStoreInstance = {
     get: vi.fn().mockImplementation(async (key) => fakeStore[key] ?? null),
