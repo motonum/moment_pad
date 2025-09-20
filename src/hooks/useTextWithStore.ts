@@ -1,5 +1,5 @@
 import { Store } from "@tauri-apps/plugin-store";
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const useTextWithStore = (initialText: string = "") => {
   const [text, setText] = useState<string>(initialText);
@@ -34,7 +34,7 @@ const useTextWithStore = (initialText: string = "") => {
       };
       save();
     },
-    [store]
+    [store],
   );
 
   return [text, setTextWithStore] as const;

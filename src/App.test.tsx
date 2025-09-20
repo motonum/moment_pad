@@ -1,9 +1,9 @@
-import { render, fireEvent, screen } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
-import * as useTextWithStore from "./hooks/useTextWithStore";
 import * as useCopy from "./hooks/useCopy";
 import * as useShortcutKey from "./hooks/useShortcutKey";
+import * as useTextWithStore from "./hooks/useTextWithStore";
 import "@testing-library/jest-dom";
 
 describe("Appコンポーネント", () => {
@@ -16,9 +16,9 @@ describe("Appコンポーネント", () => {
     vi.spyOn(useShortcutKey, "default").mockReturnValue(undefined);
 
     // Mock window.getSelection
-    Object.defineProperty(window, 'getSelection', {
+    Object.defineProperty(window, "getSelection", {
       value: () => ({
-        toString: vi.fn(() => ''),
+        toString: vi.fn(() => ""),
       }),
       writable: true,
     });
@@ -28,7 +28,7 @@ describe("Appコンポーネント", () => {
     render(<App />);
     expect(screen.getByText("MomentPad")).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText("Write something...")
+      screen.getByPlaceholderText("Write something..."),
     ).toBeInTheDocument();
   });
 
@@ -73,52 +73,67 @@ describe("Appコンポーネント", () => {
   describe("handleShortcutKey", () => {
     it("選択範囲がない場合、handleCopyが呼ばれること", () => {
       const handleCopy = vi.fn();
-      vi.spyOn(useTextWithStore, "default").mockReturnValue(["test text", vi.fn()]);
+      vi.spyOn(useTextWithStore, "default").mockReturnValue([
+        "test text",
+        vi.fn(),
+      ]);
       vi.spyOn(useCopy, "default").mockReturnValue({
         isCopied: false,
         handleCopy,
       });
-      vi.spyOn(useShortcutKey, "default").mockImplementation((_key, callback, text) => {
-        callback(text);
-      });
+      vi.spyOn(useShortcutKey, "default").mockImplementation(
+        (_key, callback, text) => {
+          callback(text);
+        },
+      );
       render(<App />);
       expect(handleCopy).toHaveBeenCalledWith("test text");
     });
 
     it("選択範囲がテキストと同じ場合、handleCopyが呼ばれること", () => {
       const handleCopy = vi.fn();
-      vi.spyOn(useTextWithStore, "default").mockReturnValue(["test text", vi.fn()]);
+      vi.spyOn(useTextWithStore, "default").mockReturnValue([
+        "test text",
+        vi.fn(),
+      ]);
       vi.spyOn(useCopy, "default").mockReturnValue({
         isCopied: false,
         handleCopy,
       });
-      vi.spyOn(useShortcutKey, "default").mockImplementation((_key, callback, text) => {
-        Object.defineProperty(window, 'getSelection', {
-          value: () => ({
-            toString: vi.fn(() => text),
-          }),
-        });
-        callback(text);
-      });
+      vi.spyOn(useShortcutKey, "default").mockImplementation(
+        (_key, callback, text) => {
+          Object.defineProperty(window, "getSelection", {
+            value: () => ({
+              toString: vi.fn(() => text),
+            }),
+          });
+          callback(text);
+        },
+      );
       render(<App />);
       expect(handleCopy).toHaveBeenCalledWith("test text");
     });
 
     it("選択範囲がテキストと異なる場合、handleCopyが呼ばれないこと", () => {
       const handleCopy = vi.fn();
-      vi.spyOn(useTextWithStore, "default").mockReturnValue(["test text", vi.fn()]);
+      vi.spyOn(useTextWithStore, "default").mockReturnValue([
+        "test text",
+        vi.fn(),
+      ]);
       vi.spyOn(useCopy, "default").mockReturnValue({
         isCopied: false,
         handleCopy,
       });
-      vi.spyOn(useShortcutKey, "default").mockImplementation((_key, callback, text) => {
-        Object.defineProperty(window, 'getSelection', {
-          value: () => ({
-            toString: vi.fn(() => "different text"),
-          }),
-        });
-        callback(text);
-      });
+      vi.spyOn(useShortcutKey, "default").mockImplementation(
+        (_key, callback, text) => {
+          Object.defineProperty(window, "getSelection", {
+            value: () => ({
+              toString: vi.fn(() => "different text"),
+            }),
+          });
+          callback(text);
+        },
+      );
       render(<App />);
       expect(handleCopy).not.toHaveBeenCalled();
     });
@@ -135,11 +150,11 @@ describe("Appコンポーネント", () => {
       const textarea = screen.getByPlaceholderText("Write something...");
 
       // Mock textareaRef.current
-      Object.defineProperty(textarea, 'selectionStart', {
+      Object.defineProperty(textarea, "selectionStart", {
         value: 8,
         writable: true,
       });
-      Object.defineProperty(textarea, 'selectionEnd', {
+      Object.defineProperty(textarea, "selectionEnd", {
         value: 8,
         writable: true,
       });
@@ -159,11 +174,11 @@ describe("Appコンポーネント", () => {
       const textarea = screen.getByPlaceholderText("Write something...");
 
       // Mock textareaRef.current
-      Object.defineProperty(textarea, 'selectionStart', {
+      Object.defineProperty(textarea, "selectionStart", {
         value: 8,
         writable: true,
       });
-      Object.defineProperty(textarea, 'selectionEnd', {
+      Object.defineProperty(textarea, "selectionEnd", {
         value: 12,
         writable: true,
       });

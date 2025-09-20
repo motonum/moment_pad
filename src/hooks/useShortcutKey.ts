@@ -31,13 +31,13 @@ const useShortcutKey = <T>(
 
       if (
         (["key", ...nativeModKeys] as const).every(
-          (k) => e[k] === keyBinding[k]
+          (k) => e[k] === keyBinding[k],
         )
       ) {
         callback(...args);
       }
     },
-    [hotKey, callback, args]
+    [hotKey, callback, args],
   );
 
   useEffect(() => {

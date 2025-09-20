@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 import "./App.css";
-import { useTextWithStore, useCopy, useShortcutKey } from "./hooks";
+import { useCopy, useShortcutKey, useTextWithStore } from "./hooks";
 
 function App() {
   const [text, setTextWithStore] = useTextWithStore();
@@ -18,7 +18,7 @@ function App() {
         handleCopy(text);
       }
     },
-    [handleCopy]
+    [handleCopy],
   );
 
   useShortcutKey({ key: "c", cmdKey: true }, handleShortcutKey, text);
@@ -39,7 +39,7 @@ function App() {
       console.log(spaceStr);
 
       const newText = `${text.substring(0, start)}${spaceStr}${text.substring(
-        end
+        end,
       )}`;
       setTextWithStore(newText);
 
@@ -48,7 +48,7 @@ function App() {
         textarea.selectionEnd = start + numSpace;
       }, 0);
     },
-    [text, setTextWithStore]
+    [text, setTextWithStore],
   );
 
   return (

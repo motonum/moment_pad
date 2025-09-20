@@ -1,10 +1,17 @@
-import { renderHook, act } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, MockedObject } from "vitest";
-import useTextWithStore from "./useTextWithStore";
 import { Store } from "@tauri-apps/plugin-store";
+import { act, renderHook } from "@testing-library/react";
+import {
+  beforeEach,
+  describe,
+  expect,
+  it,
+  type MockedObject,
+  vi,
+} from "vitest";
+import useTextWithStore from "./useTextWithStore";
 
 const mockStoreInstance = (await Store.load(
-  "store.json"
+  "store.json",
 )) as MockedObject<Store>;
 describe("useTextWithStore", () => {
   beforeEach(async () => {

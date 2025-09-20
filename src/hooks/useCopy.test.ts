@@ -1,7 +1,7 @@
-import { renderHook, act } from "@testing-library/react";
-import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
-import useCopy from "./useCopy";
 import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
+import { act, renderHook } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import useCopy from "./useCopy";
 
 describe("useCopy", () => {
   const windowLabel = "main";

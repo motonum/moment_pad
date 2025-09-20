@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import useShortcutKey from "./useShortcutKey";
 
 describe("useShortcutKey", () => {
@@ -11,7 +11,7 @@ describe("useShortcutKey", () => {
 
   const fireKeyDown = (
     key: string,
-    options: Partial<KeyboardEventInit> = {}
+    options: Partial<KeyboardEventInit> = {},
   ) => {
     const event = new KeyboardEvent("keydown", { key, ...options });
     window.dispatchEvent(event);
@@ -52,7 +52,7 @@ describe("useShortcutKey", () => {
 
     it("alt + shift + kでコールバックが呼ばれること", () => {
       renderHook(() =>
-        useShortcutKey({ key: "k", altKey: true, shiftKey: true }, callback)
+        useShortcutKey({ key: "k", altKey: true, shiftKey: true }, callback),
       );
       fireKeyDown("k", { altKey: true, shiftKey: true });
       expect(callback).toHaveBeenCalledTimes(1);
@@ -60,7 +60,7 @@ describe("useShortcutKey", () => {
 
     it("修飾子キーが足りない場合はコールバックが呼ばれないこと", () => {
       renderHook(() =>
-        useShortcutKey({ key: "k", cmdKey: true, altKey: true }, callback)
+        useShortcutKey({ key: "k", cmdKey: true, altKey: true }, callback),
       );
       fireKeyDown("k", { metaKey: true });
       expect(callback).not.toHaveBeenCalled();
@@ -101,7 +101,9 @@ describe("useShortcutKey", () => {
     const addSpy = vi.spyOn(window, "addEventListener");
     const removeSpy = vi.spyOn(window, "removeEventListener");
 
-    const { unmount } = renderHook(() => useShortcutKey({ key: "k" }, callback));
+    const { unmount } = renderHook(() =>
+      useShortcutKey({ key: "k" }, callback),
+    );
 
     expect(addSpy).toHaveBeenCalledWith("keydown", expect.any(Function));
 
