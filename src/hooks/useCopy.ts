@@ -25,7 +25,7 @@ const useCopy = ({ windowLabel, duration = 500 }: UseCopyProps) => {
         hideWindow(windowLabel);
       }
     },
-    [isCopied, duration, windowLabel]
+    [isCopied, duration, windowLabel],
   );
 
   return { isCopied, handleCopy };
