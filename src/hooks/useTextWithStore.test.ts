@@ -1,5 +1,5 @@
 import { Store } from "@tauri-apps/plugin-store";
-import { act, renderHook } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import {
   beforeEach,
   describe,
@@ -13,6 +13,7 @@ import useTextWithStore from "./useTextWithStore";
 const mockStoreInstance = (await Store.load(
   "store.json",
 )) as MockedObject<Store>;
+
 describe("useTextWithStore", () => {
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -24,22 +25,16 @@ describe("useTextWithStore", () => {
 
     expect(result.current[0]).toBe("initial text");
 
-    await act(async () => {
-      await vi.waitFor(() => {
-        expect(result.current[0]).toBe("initial text");
-      });
+    await waitFor(() => {
+      expect(mockStoreInstance.get).toHaveBeenCalledWith("text");
     });
-
-    expect(mockStoreInstance.get).toHaveBeenCalledWith("text");
   });
 
   it("setTextWithStoreでテキストを更新し、ストアに保存すること", async () => {
     const { result } = renderHook(() => useTextWithStore("initial text"));
 
-    await act(async () => {
-      await vi.waitFor(() => {
-        expect(result.current[0]).toBe("initial text");
-      });
+    await waitFor(() => {
+      expect(mockStoreInstance.get).toHaveBeenCalledWith("text");
     });
 
     const newText = "updated text";
