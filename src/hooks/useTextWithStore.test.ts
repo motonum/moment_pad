@@ -60,4 +60,17 @@ describe("useTextWithStore", () => {
     expect(result.current[0]).toBe("initial text");
     expect(mockStoreInstance.get).toHaveBeenCalledWith("text");
   });
+
+  it("ストアに値がある場合、その値を読み込むこと", async () => {
+    const storedText = "text from store";
+
+    await mockStoreInstance.set("text", { value: storedText });
+
+    const { result } = renderHook(() => useTextWithStore("initial text"));
+
+    await waitFor(() => {
+      expect(result.current[0]).toBe(storedText);
+    });
+    expect(mockStoreInstance.get).toHaveBeenCalledWith("text");
+  });
 });
