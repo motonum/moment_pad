@@ -15,7 +15,6 @@ describe("Appコンポーネント", () => {
     });
     vi.spyOn(useShortcutKey, "default").mockReturnValue(undefined);
 
-    // Mock window.getSelection
     Object.defineProperty(window, "getSelection", {
       value: () => ({
         toString: vi.fn(() => ""),
@@ -149,7 +148,6 @@ describe("Appコンポーネント", () => {
       render(<App />);
       const textarea = screen.getByPlaceholderText("Write something...");
 
-      // Mock textareaRef.current
       Object.defineProperty(textarea, "selectionStart", {
         value: 8,
         writable: true,
@@ -173,7 +171,6 @@ describe("Appコンポーネント", () => {
       render(<App />);
       const textarea = screen.getByPlaceholderText("Write something...");
 
-      // Mock textareaRef.current
       Object.defineProperty(textarea, "selectionStart", {
         value: 8,
         writable: true,
