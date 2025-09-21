@@ -69,6 +69,18 @@ describe("Appコンポーネント", () => {
     expect(handleCopy).toHaveBeenCalledWith("Hello");
   });
 
+  it("isCopiedがtrueの場合、テキストがあってもコピーボタンが無効になること", () => {
+    const handleCopy = vi.fn();
+    vi.spyOn(useTextWithStore, "default").mockReturnValue(["Hello", vi.fn()]);
+    vi.spyOn(useCopy, "default").mockReturnValue({
+      isCopied: true,
+      handleCopy,
+    });
+    render(<App />);
+    const copyButton = screen.getByText("Copied!");
+    expect(copyButton).toBeDisabled();
+  });
+
   describe("handleShortcutKey", () => {
     it("選択範囲がない場合、handleCopyが呼ばれること", () => {
       const handleCopy = vi.fn();
