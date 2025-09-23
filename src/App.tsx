@@ -26,6 +26,7 @@ function App() {
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key !== "Tab") return;
+      if (e.nativeEvent.isComposing) return;
       e.preventDefault();
 
       const textarea = textareaRef.current;
