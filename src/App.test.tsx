@@ -27,7 +27,6 @@ describe("Appコンポーネント", () => {
   it("Appコンポーネントがレンダリングされること", () => {
     render(<App />);
     expect(screen.getByText("MomentPad")).toBeInTheDocument();
-    // CodeMirrorはrole='textbox'を持つdivとしてレンダリングされる
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 
@@ -40,7 +39,6 @@ describe("Appコンポーネント", () => {
     render(<App />);
     const editor = screen.getByRole("textbox");
     await userEvent.type(editor, "Hello");
-    // CodeMirrorのonChangeは入力のたびに呼ばれるため、最後の呼び出しをチェックする
     expect(setTextWithStore).toHaveBeenLastCalledWith("Hello");
   });
 
