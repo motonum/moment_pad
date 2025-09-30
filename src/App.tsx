@@ -25,13 +25,6 @@ function App() {
 
   useShortcutKey({ key: "c", cmdKey: true }, handleShortcutKey, text);
 
-  const onChange = useCallback(
-    (value: string) => {
-      setTextWithStore(value);
-    },
-    [setTextWithStore],
-  );
-
   return (
     <div className="container">
       <header data-tauri-drag-region className="header">
@@ -52,14 +45,14 @@ function App() {
         extensions={[
           markdown({ base: markdownLanguage, codeLanguages: languages }),
         ]}
-        onChange={onChange}
+        onChange={(value) => setTextWithStore(value)}
         theme={
           window.matchMedia?.("(prefers-color-scheme: dark)")?.matches
             ? "dark"
             : "light"
         }
         autoFocus={true}
-        placeholder="Type here..."
+        placeholder="Write something..."
         basicSetup={{
           lineNumbers: false,
           highlightActiveLine: false,
