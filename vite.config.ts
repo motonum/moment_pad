@@ -33,7 +33,7 @@ export default defineConfig(async () => ({
   },
   test: {
     globals: true,
-    environment: "jsdom",
+    environment: "happy-dom",
     setupFiles: "./src/test/setup.ts",
   },
 }));

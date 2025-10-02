@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
 import * as useCopy from "./hooks/useCopy";
@@ -26,21 +27,19 @@ describe("Appコンポーネント", () => {
   it("Appコンポーネントがレンダリングされること", () => {
     render(<App />);
     expect(screen.getByText("MomentPad")).toBeInTheDocument();
-    expect(
-      screen.getByPlaceholderText("Write something..."),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 
-  it("テキストエリアの値が変更時に更新されること", () => {
+  it("エディタの値が変更時に更新されること", async () => {
     const setTextWithStore = vi.fn();
     vi.spyOn(useTextWithStore, "default").mockReturnValue([
       "",
       setTextWithStore,
     ]);
     render(<App />);
-    const textarea = screen.getByPlaceholderText("Write something...");
-    fireEvent.change(textarea, { target: { value: "Hello" } });
-    expect(setTextWithStore).toHaveBeenCalledWith("Hello");
+    const editor = screen.getByRole("textbox");
+    await userEvent.type(editor, "Hello");
+    expect(setTextWithStore).toHaveBeenLastCalledWith("Hello");
   });
 
   it("テキストがない場合にコピーボタンが無効になること", () => {
@@ -56,7 +55,7 @@ describe("Appコンポーネント", () => {
     expect(copyButton).not.toBeDisabled();
   });
 
-  it("コピーボタンをクリックするとhandleCopyが呼ばれること", () => {
+  it("コピーボタンをクリックするとhandleCopyが呼ばれること", async () => {
     const handleCopy = vi.fn();
     vi.spyOn(useTextWithStore, "default").mockReturnValue(["Hello", vi.fn()]);
     vi.spyOn(useCopy, "default").mockReturnValue({
@@ -65,7 +64,7 @@ describe("Appコンポーネント", () => {
     });
     render(<App />);
     const copyButton = screen.getByText("Copy");
-    fireEvent.click(copyButton);
+    await userEvent.click(copyButton);
     expect(handleCopy).toHaveBeenCalledWith("Hello");
   });
 
@@ -147,54 +146,6 @@ describe("Appコンポーネント", () => {
       );
       render(<App />);
       expect(handleCopy).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("handleKeyDown", () => {
-    it("Tabキーで2スペースが挿入されること", () => {
-      const setTextWithStore = vi.fn();
-      vi.spyOn(useTextWithStore, "default").mockReturnValue([
-        "initial text",
-        setTextWithStore,
-      ]);
-      render(<App />);
-      const textarea = screen.getByPlaceholderText("Write something...");
-
-      Object.defineProperty(textarea, "selectionStart", {
-        value: 8,
-        writable: true,
-      });
-      Object.defineProperty(textarea, "selectionEnd", {
-        value: 8,
-        writable: true,
-      });
-
-      fireEvent.keyDown(textarea, { key: "Tab", preventDefault: () => {} });
-
-      expect(setTextWithStore).toHaveBeenCalledWith("initial   text");
-    });
-
-    it("Tabキーで選択範囲が2スペースに置換されること", () => {
-      const setTextWithStore = vi.fn();
-      vi.spyOn(useTextWithStore, "default").mockReturnValue([
-        "initial text",
-        setTextWithStore,
-      ]);
-      render(<App />);
-      const textarea = screen.getByPlaceholderText("Write something...");
-
-      Object.defineProperty(textarea, "selectionStart", {
-        value: 8,
-        writable: true,
-      });
-      Object.defineProperty(textarea, "selectionEnd", {
-        value: 12,
-        writable: true,
-      });
-
-      fireEvent.keyDown(textarea, { key: "Tab", preventDefault: () => {} });
-
-      expect(setTextWithStore).toHaveBeenCalledWith("initial   ");
     });
   });
 });
