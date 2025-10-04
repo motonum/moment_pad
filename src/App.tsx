@@ -45,6 +45,7 @@ function App() {
         height="100%"
         extensions={[
           markdown({ base: markdownLanguage, codeLanguages: languages }),
+          EditorView.lineWrapping,
           EditorView.domEventHandlers({
             copy(event, view) {
               const hasSelection = !view.state.selection.ranges.every(
