@@ -1,7 +1,8 @@
-import { useCallback } from "react";
-import CodeMirror from "@uiw/react-codemirror";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
+import { EditorView } from "@codemirror/view";
+import CodeMirror from "@uiw/react-codemirror";
+import { useCallback } from "react";
 import "./App.css";
 import { useCopy, useShortcutKey, useTextWithStore } from "./hooks";
 
@@ -44,6 +45,18 @@ function App() {
         height="100%"
         extensions={[
           markdown({ base: markdownLanguage, codeLanguages: languages }),
+          EditorView.domEventHandlers({
+            copy(event, view) {
+              const hasSelection = !view.state.selection.ranges.every(
+                (r) => r.empty,
+              );
+              if (!hasSelection) {
+                event.preventDefault();
+                return true;
+              }
+              return false;
+            },
+          }),
         ]}
         onChange={(value) => setTextWithStore(value)}
         theme={
