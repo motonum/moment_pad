@@ -1,11 +1,5 @@
-import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { useCallback, useState } from "react";
-
-const hideWindow = (windowLabel: string) => {
-  WebviewWindow.getByLabel(windowLabel).then((val) => {
-    val?.hide();
-  });
-};
+import hideWindow from "../utils/hideWindow";
 
 type UseCopyProps = { windowLabel: string; duration?: number };
 
