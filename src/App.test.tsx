@@ -44,14 +44,14 @@ describe("Appコンポーネント", () => {
 
   it("テキストがない場合にコピーボタンが無効になること", () => {
     render(<App />);
-    const copyButton = screen.getByText("Copy");
+    const copyButton = screen.getByRole("button", { name: "copy icon" });
     expect(copyButton).toBeDisabled();
   });
 
   it("テキストがある場合にコピーボタンが有効になること", () => {
     vi.spyOn(useTextWithStore, "default").mockReturnValue(["Hello", vi.fn()]);
     render(<App />);
-    const copyButton = screen.getByText("Copy");
+    const copyButton = screen.getByRole("button", { name: "copy icon" });
     expect(copyButton).not.toBeDisabled();
   });
 
@@ -63,7 +63,7 @@ describe("Appコンポーネント", () => {
       handleCopy,
     });
     render(<App />);
-    const copyButton = screen.getByText("Copy");
+    const copyButton = screen.getByRole("button", { name: "copy icon" });
     await userEvent.click(copyButton);
     expect(handleCopy).toHaveBeenCalledWith("Hello");
   });
@@ -76,7 +76,7 @@ describe("Appコンポーネント", () => {
       handleCopy,
     });
     render(<App />);
-    const copyButton = screen.getByText("Copied!");
+    const copyButton = screen.getByRole("button", { name: "check icon" });
     expect(copyButton).toBeDisabled();
   });
 
