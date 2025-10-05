@@ -5,7 +5,10 @@ import CodeMirror from "@uiw/react-codemirror";
 import { useCallback } from "react";
 import "./App.css";
 import { useCopy, useShortcutKey, useTextWithStore } from "./hooks";
+import CheckIcon from "./icons/CheckIcon";
+import CopyIcon from "./icons/CopyIcon";
 import hideWindow from "./utils/hideWindow";
+import isDarkMode from "./utils/isDarkMode";
 
 function App() {
   const [text, setTextWithStore] = useTextWithStore();
@@ -45,7 +48,11 @@ function App() {
         onClick={() => handleCopy(text)}
         disabled={isCopied || !text}
       >
-        {isCopied ? "Copied!" : "Copy"}
+        {isCopied ? (
+          <CheckIcon color={isDarkMode() ? "#e5e5e5" : "#333"} />
+        ) : (
+          <CopyIcon color={isDarkMode() ? "#e5e5e5" : "#333"} size={24} />
+        )}
       </button>
       <CodeMirror
         className="memo-pad"
@@ -68,11 +75,7 @@ function App() {
           }),
         ]}
         onChange={(value) => setTextWithStore(value)}
-        theme={
-          window.matchMedia?.("(prefers-color-scheme: dark)")?.matches
-            ? "dark"
-            : "light"
-        }
+        theme={isDarkMode() ? "dark" : "light"}
         autoFocus={true}
         placeholder="Write something..."
         basicSetup={{
