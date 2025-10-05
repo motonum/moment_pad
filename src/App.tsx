@@ -5,6 +5,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import { useCallback } from "react";
 import "./App.css";
 import { useCopy, useShortcutKey, useTextWithStore } from "./hooks";
+import hideWindow from "./utils/hideWindow";
 
 function App() {
   const [text, setTextWithStore] = useTextWithStore();
@@ -31,6 +32,13 @@ function App() {
       <header data-tauri-drag-region className="header">
         MomentPad
       </header>
+      <button
+        type="button"
+        className="close-button"
+        onClick={() => hideWindow("main")}
+      >
+        x
+      </button>
       <button
         type="button"
         className="copy-button"
