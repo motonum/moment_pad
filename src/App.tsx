@@ -14,7 +14,7 @@ function App() {
   const [text, setTextWithStore] = useTextWithStore();
   const { isCopied, handleCopy } = useCopy({ windowLabel: "main" });
 
-  const handleShortcutKey = useCallback(
+  const handleCopyShortcutKey = useCallback(
     (text: string) => {
       const selection = getSelection();
       if (
@@ -28,7 +28,8 @@ function App() {
     [handleCopy],
   );
 
-  useShortcutKey({ key: "c", cmdKey: true }, handleShortcutKey, text);
+  useShortcutKey({ key: "c", cmdKey: true }, handleCopyShortcutKey, text);
+  useShortcutKey({ key: "w", cmdKey: true }, hideWindow, "main");
 
   return (
     <div className="container">
